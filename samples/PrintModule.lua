@@ -1,4 +1,5 @@
-local module = require(script.Parent.Parent.SimpleClass).new()
+local simpleClassPath -- path to module
+local module = require(simpleClassPath).new()
 
 function module:Constructor(messages : {}) : nil
 	local defaultMessages = {
@@ -16,17 +17,28 @@ function module:Init()
 	self._print = print
 end
 
-function module:SayHello(userName : string) : nil
-	local text = (userName and self.HelloMessage .. ' ' .. userName .. '!') or self.HelloMessage .. '!'
-	
-	self._print(text)
+function module:SayHello(userName : string?) : nil
+	self:SayMessage(self.HelloMessage,userName)
 end
 
 function module:SayGoodbye(userName : string?) : nil
-	local userName = tostring(userName)
-	local text = (userName and self.GoodbyeMessage .. ' ' .. userName .. '!') or self.HelloMessage .. '!'
+	self:SayMessage(self.GoodbyeMessage,userName)
+end
+
+function module:SayMessage(message : string,userName : string?) : nil
+	local text
 	
-	self._print(text)
+	if userName then
+		text = self:MakeText(message,tostring(userName))
+	else
+		text = (message .. '!')
+	end
+	
+	self:Say(text)
+end
+
+function module:MakeText(mainText, userName : string)
+	return (mainText .. ', ' .. userName .. '!');
 end
 
 function module:Say(text : string) : nil
