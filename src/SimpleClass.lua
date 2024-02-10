@@ -7,10 +7,10 @@ function module.new()
 	local object = setmetatable({},module)	
 	object.__index = object
 	
-	function object.new()
+	function object.new(...)
 		local self = setmetatable({},object)
 		
-		return self:Constructor() or self:Init() or self;
+		return self:Constructor(...) or self:Init() or self;
 	end
 	
 	return object:_init() or object;
